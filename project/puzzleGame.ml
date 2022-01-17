@@ -204,18 +204,24 @@ let checkConflict num1 num2 index1 index2 =
   in let rigaGoal x = (x - 1) / 4
   in let colonnaGoal x = (x - 1) mod 4
   in let posizioneGoal x = x - 1
-in if (((riga index1 = riga (index2)) || (colonna index1 = colonna (index2))) && ((rigaGoal num1 = rigaGoal num2) || (colonnaGoal num1 = colonnaGoal num2)) && 
-  ((index1 > index2 && (posizioneGoal num1 < (posizioneGoal num2))))) 
-  then 2 else 0 ;;
+in if ((((riga index1 = riga (index2)) && ((rigaGoal num1 = rigaGoal num2))) || ((colonna index1 = colonna (index2))) && (colonnaGoal num1 = colonnaGoal num2)) && 
+  ((index1 > index2 && ((posizioneGoal num1) < (posizioneGoal num2))))) 
+  then 
+    2 
+  else 
+    0 ;;
 
 let checkLinearConflict x index (St(state)) =
   let rec aux count indexY = function
     [] -> count
     | hd::tail ->
-      if hd = 0 then
-        aux (count) (indexY+1) tail
-      else 
-        aux (count + checkConflict x hd index indexY) (indexY+1) tail
+      if indexY = index then
+        count
+      else
+        if hd = 0 then
+          aux (count) (indexY+1) tail
+        else
+          aux (count + checkConflict x hd index indexY) (indexY+1) tail
 in aux 0 0 state;;
 
 let distanzaA_conflict cammino =
@@ -230,13 +236,19 @@ let distanzaA_conflict cammino =
         if num = 0 then
           aux_Hn (index+1) (count_Hn) rest
         else
-          aux_Hn (index+1) (count_Hn + (distanzaManhattan (colonna index) (colonna (num-1)) (riga index) (riga (num-1))) + (checkLinearConflict num index (St(state)))) rest
+          aux_Hn (index+1) (count_Hn + (distanzaManhattan (colonna index) (colonna (num-1)) (riga index) (riga (num-1))) 
+          + (checkLinearConflict num index (St(state)))) rest
     in aux_Hn 0 0 state
-in (heuristic (List.hd cammino));;
+  in let costocammino cammino =
+    let rec aux_Gn count_Gn = function
+    [] -> count_Gn
+    | x::rest -> aux_Gn (count_Gn + 1) rest
+  in aux_Gn 0 cammino
+in (heuristic (List.hd cammino)) + (costocammino cammino);;
 
 
 (* funzione di comparazione per l'ordinamento della coda di priorità *)
-let funzioneValutazione = distanzaA_Manhattan;;
+let funzioneValutazione = distanzaA_conflict;;
 let confrontaCammino cammino1 cammino2 =
   let piuvicino (cammino1, cammino2) =
     (funzioneValutazione cammino1) < (funzioneValutazione cammino2)
@@ -271,11 +283,11 @@ let start_Wtime stato_iniziale =
     fx
 in time start stato_iniziale;;
 
-let statoIniziale = St[1;0;3;4;
-                      5;2;6;7;
-                      9;10;11;8;
-                      13;14;15;12];;
-
+let statoIniziale = St[14;5;10;7;
+                      4;15;1;11;
+                      2;13;3;12;
+                      9;8;6;0];;
+              
 (* main *)
 let main () =
   if (istanzaValida statoIniziale) && (checkSolvability statoIniziale) then
@@ -284,3 +296,14 @@ let main () =
     print_string("Istanza di input non valida!");
     print_newline();;
   main();;
+
+(*
+  let start_Wtime stato_iniziale =
+    let time f x =
+      let t = Sys.time() in
+      let fx = f x in
+      Printf.printf "execution time: %fs\n" (Sys.time() -. t);
+      fx
+  in time print_int(distanzaA_conflict [statoIniziale]); print_newline();;
+
+  start_Wtime statoIniziale;;*)
