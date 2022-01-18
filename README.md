@@ -11,7 +11,7 @@ Heuristics implemented:
 
 Both the A * algorithm and the Best First search (obviously less efficient) have been implemented.
 For algorithm evaluations see the attached report.
-To change the type of algorithm just change the distance function used to sort the priority queue, in this way the evaluation function f (n) can be chosen by the user.
+To change the type of algorithm just change the distance function used to sort the priority queue, in this way the evaluation function **f(n)** can be chosen by the user.
 
 It is possible to change the various instances to be solved by changing the variable Initial state in the file. At this point the main is able to check if the instance is valid and solvable and, if successful, to resolve it.
 
