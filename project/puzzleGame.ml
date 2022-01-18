@@ -198,18 +198,17 @@ let distanzaA_Misplaced cammino =
 in (heuristic (List.hd cammino)) + (costocammino cammino);;
 
 
+(* funzioni di comodo per calcolare i conflitti lineari *)
 let checkConflict num1 num2 index1 index2 =
-  let colonna x = x mod 4
-  in let riga x = x / 4
-  in let rigaGoal x = (x - 1) / 4
-  in let colonnaGoal x = (x - 1) mod 4
-  in let posizioneGoal x = x - 1
-in if ((((riga index1 = riga (index2)) && ((rigaGoal num1 = rigaGoal num2))) || ((colonna index1 = colonna (index2))) && (colonnaGoal num1 = colonnaGoal num2)) && 
-  ((index1 > index2 && ((posizioneGoal num1) < (posizioneGoal num2))))) 
-  then 
-    2 
-  else 
-    0 ;;
+    let colonna x = x mod 4
+    in let riga x = x / 4
+    in let rigaGoal x = (x - 1) / 4
+    in let colonnaGoal x = (x - 1) mod 4
+    in let posizioneGoal x = x - 1
+  in if ((((riga index1 = riga (index2)) && ((rigaGoal num1 = rigaGoal num2))) || 
+    ((colonna index1 = colonna (index2))) && (colonnaGoal num1 = colonnaGoal num2)) && 
+    ((index1 > index2 && ((posizioneGoal num1) < (posizioneGoal num2))))) 
+    then 2 else 0 ;;
 
 let checkLinearConflict x index (St(state)) =
   let rec aux count indexY = function
@@ -224,6 +223,7 @@ let checkLinearConflict x index (St(state)) =
           aux (count + checkConflict x hd index indexY) (indexY+1) tail
 in aux 0 0 state;;
 
+(* A* utilizzando linear conflict + Manhattan + costo cammini *)
 let distanzaA_conflict cammino =
   let distanzaManhattan x1 x2 y1 y2 = 
     ((abs(x1-x2)) + (abs(y1 -y2)))
@@ -236,7 +236,8 @@ let distanzaA_conflict cammino =
         if num = 0 then
           aux_Hn (index+1) (count_Hn) rest
         else
-          aux_Hn (index+1) (count_Hn + (distanzaManhattan (colonna index) (colonna (num-1)) (riga index) (riga (num-1))) 
+          aux_Hn (index+1) (count_Hn 
+          + (distanzaManhattan (colonna index) (colonna (num-1)) (riga index) (riga (num-1))) 
           + (checkLinearConflict num index (St(state)))) rest
     in aux_Hn 0 0 state
   in let costocammino cammino =
@@ -261,7 +262,7 @@ let confrontaCammino cammino1 cammino2 =
 let search (St(state)) (Graph succ) =
   let estendi cammino (Graph succ) =
     (*stampaCammino cammino;*)
-    List.map (function x -> x::cammino) (List.filter (function x -> (not (List.mem x cammino)) && (checkSolvability x)) (succ (List.hd cammino)))
+    List.map (function x -> x::cammino) (List.filter (function x -> (not (List.mem x cammino))) (succ (List.hd cammino)))
   in let rec search_aux = function
     [] -> raise NotFound
     | cammino::rest -> 
@@ -287,7 +288,9 @@ let statoIniziale = St[14;5;10;7;
                       4;15;1;11;
                       2;13;3;12;
                       9;8;6;0];;
-              
+
+
+                      
 (* main *)
 let main () =
   if (istanzaValida statoIniziale) && (checkSolvability statoIniziale) then
@@ -296,14 +299,3 @@ let main () =
     print_string("Istanza di input non valida!");
     print_newline();;
   main();;
-
-(*
-  let start_Wtime stato_iniziale =
-    let time f x =
-      let t = Sys.time() in
-      let fx = f x in
-      Printf.printf "execution time: %fs\n" (Sys.time() -. t);
-      fx
-  in time print_int(distanzaA_conflict [statoIniziale]); print_newline();;
-
-  start_Wtime statoIniziale;;*)
