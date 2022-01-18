@@ -1,5 +1,4 @@
 exception Fail;;
-exception NotFound;;
 
 (* definizione tipo stato -> una lista di interi*)
 type stato = St of int list;;
