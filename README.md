@@ -18,3 +18,6 @@ It is possible to change the various instances to be solved by changing the vari
 ### Commands to compile and run the program:
 * ***ocamlc puzzleGame.ml -o puzzleGame***
 * ***./puzzleGame***
+
+### Credits:
+* https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/
