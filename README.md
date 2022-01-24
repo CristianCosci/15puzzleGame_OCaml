@@ -16,8 +16,10 @@ To change the type of algorithm just change the distance function used to sort t
 It is possible to change the various instances to be solved by changing the variable Initial state in the file. At this point the main is able to check if the instance is valid and solvable and, if successful, to resolve it.
 
 ### Commands to compile and run the program:
-* ***ocamlc puzzleGame.ml -o puzzleGame***
-* ***./puzzleGame***
+```bash 
+ocamlc puzzleGame.ml -o puzzleGame
+./puzzleGame
+```
 
 ### Credits:
 * https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/
