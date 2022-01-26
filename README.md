@@ -5,11 +5,11 @@ Implementation of A-star(A*) to solve 15-Puzzle game in OCaml
 In the repo there is a report explaining the project and in the project folder there are some example instances (in the .txt) and the Ocaml file (the actual program).
 
 Heuristics implemented:
-1. Hamming
-2. Manhattan distance
-3. Linear conflicts + Manhattan distance
+1. **Hamming**
+2. **Manhattan distance**
+3. **Linear conflicts** + **Manhattan distance**
 
-Both the A * algorithm and the Best First search (obviously less efficient) have been implemented.
+Both the A* algorithm and the Best First search (obviously less efficient) have been implemented.
 For algorithm evaluations see the attached report.
 To change the type of algorithm just change the distance function used to sort the priority queue, in this way the evaluation function **f(n)** can be chosen by the user.
 
