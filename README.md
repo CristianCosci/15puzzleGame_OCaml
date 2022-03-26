@@ -23,3 +23,5 @@ ocamlc puzzleGame.ml -o puzzleGame
 
 ### Credits:
 * https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/
+
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCristianCosci%2F15puzzleGame_OCaml&count_bg=%23FF00C1&title_bg=%23555555&icon=ocaml.svg&icon_color=%23E7E7E7&title=Help&edge_flat=false)](https://hits.seeyoufarm.com)
